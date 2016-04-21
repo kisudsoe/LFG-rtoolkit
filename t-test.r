@@ -37,4 +37,4 @@ ttest.iter = function(data, group) {
   return(raw.p)
 }
 
-raw.p = ttest.iter(data_gene_mainNum, group)
+raw.p = ttest.iter(gene_signal, group)
