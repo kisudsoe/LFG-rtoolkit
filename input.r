@@ -15,3 +15,5 @@ input = function(i) {
   }
   return(data)
 }
+
+write.table(fdr,"fdr.csv",sep=",",row.names=TRUE) # save into your workspace
