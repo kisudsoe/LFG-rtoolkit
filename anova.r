@@ -1,6 +1,6 @@
 data = input(1) # Set variable 'data' with input data
 
-ssanova2 = function(data) { # function start
+ss.anova2 = function(data) { # function start
 	row = rownames(data)
 	result = 0
 	out = ""
