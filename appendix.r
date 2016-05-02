@@ -14,6 +14,7 @@
   > save.image("folder path") # R은 디렉토리 구분을 "\\" 또는 "/"으로 함에 주의
 
  
+
 ### I. 데이터 입출력 함수 ###
  
 ## I-1. 입력 관련 ##
@@ -52,6 +53,7 @@
   > write.table(mat, "aa.csv", sep=",", row.names=TRUE) # 작업공간에 aa.csv 파일을 생성
 
 
+  
 ### II. 일반 자료형 함수 ###
  
 ## II-1. 자료형 확인 ##
@@ -178,7 +180,6 @@
   > as.logical(x)
 
 
-
 ## II-7. 클래스 타입 변환 관련 ## (신규 2016-04-26)
 
   > as.list					# 벡터 x를 리스트로 변환
@@ -193,6 +194,7 @@
   > unlist(df)				# 데이터 프레임 df를 벡터로 변환
 
   
+
 ### III. 그래프 함수 ###
   
 ## III-1. Hihg-level 관련 ##
@@ -246,3 +248,87 @@
  
   > dev.copy(png,filename='filename.png')
   > dev.off()
+  
+
+  
+### IV. 통계 함수 ###
+
+## IV-1. 유의성 검정 관련 ##
+
+# [정규성 검정]
+  > shapiro.test(x) 				# Shapiro-Wilk normality test
+
+# [One sample t-test]
+  > t.test(x, mu=n) 				# mu=n이라는 귀무가설에 대해 one sample t-test (양측검정)
+  > t.test(x, mu=n, alternative=“less”) # mu < n이라는 귀무가설에 대해 단측검정
+  > t.test(x, mu=n, alter=“greater”)# mu > n이라는 귀무가설에 대해 단측검정
+  > t.test(x, mu=n, conf.level=m) 	# 유의수준을 변경
+  > t.test.out$p.value 				# 결과물에서 p-value만 추출
+
+# [Two sample t-test]
+# 1) F 검정 : 두 sample의 분산이 같은지 알아봄
+  > var.test(x1~type, data=x) 		# x에서 x1을 type별로 뽑아서 검정 (유의할 경우 분산이 다름)
+									# p-value가 유의한 경우 두 분산 다르므로 Welch의 t-test를 수행할 수 있음
+# 2) 이분산 검정 : F 검정 결과 유의한 경우
+  > t.test(x1~type) 				# Welch Two Sample t-test
+
+# 3) 등분산 검정 : F 검정 결과 유의하지 않은 경우
+  > t.test(x1~type, var.equal=TRUE)
+
+# 4) Paried t-test
+  > shapiro.test(x-y) 				# 서로 연관된 두 변수의 차가 0인지에 대해 정규성 검정을 수행.
+									# p-value가 유의하지 않은 경우 정규성을 따르므로 다음의 paired t-test를 수행할 수 있음
+  > t.test(x, y, paired=T) 			# x와 y에 대해 paired t-test를 수행
+
+# [비모수적 검정]
+  > shapiro.test(x-y) 				# p-value가 유의한 경우 데이터가 정규분포를 따르지 않으므로 Wilcoxon signed rank test를 수행해야 함
+  > wilcox.test((x-y)) 				# one-sample t-test와 paired t-test에 대응하는 비모수 검정법
+  > wilcox.test((x-y), exact=FALSE) # 데이터의 동률 값을 정규분포에 근사시켜 해결함
+  > wilcox.test(x, y) 				# two sample t-test에 대응하는 비모수 검정법
+
+# [One-Way ANOVA]
+# 1) ANOVA 수행
+  > boxplot(Values~Treats) 			# Treats의 종류에 따른 Values 데이터의 형태를 확인
+  > aov(Values~Treats) 				# Treats의 종류에 따른 Values 데이터에 ANOVA 수행
+  > summary(avo.out) 				# 결과 정리
+# 2) 유의한 차이를 보이는 그룹 찾기(사후검정)
+  > TukeyHSD(aov.out)
+
+# [Two-Way ANOVA]
+# 1) 데이터 형태를 확인
+  > interaction.plot(pred1, pred2, resp) # pred1, pred2 : 범주형 예측 변수. Resp : 반응 변수에 대한 interaction plot을 그림
+  > lm(Syntax) 						# 다중회귀분석과 같음
+  > aov(lm.out) 					# ANOVA 수행
+  > summay(aov.out) 				# 결과 정리
+
+
+## IV-2. 자료분석 관련
+
+# [범주형 자료분석 함수]
+  > chisq.test(x, p=y) 				# x값(관찰값)들과 parameter인 y값(기대값)들의 독립성 검정
+  > chisq.test(contTable) 			# contTable은 관측치를 테이블로 나타낸 것. 가로축과 세로축에 해당하는 두 변수의 독립성 검정
+  > fisher.test(contTable) 			# 테이블의 도수가 매우 작은 경우, Fisher의 exact test를 수행함
+
+# [상관분석 함수]
+  > cor(x, y) 						# pearson correlation coefficient를 구함
+  > cor(x, y, method=“spearman”) 	# spearman rank correlation coefficient를 구함
+
+# [회귀분석 함수]
+# 1) 단순 회귀분석
+> lm(y~x, data=dat) # 독립변수 x와 종속변수는 y에 대해 회귀식을 구함
+# - 결과 보기 (lm.result = 반환된 회귀식)
+> plot(y~x)
+> abline(lm.result, col=“red”)
+
+# 2) 잔차 분석
+> reside(lm.result) 				# 잔차
+> fitted(lm.result) 				# 회귀식에 의한 독립변수들에 대한 반응변수의 값
+> coef(lm.result) 					# 적합된 회귀선의 계수
+> shapiro.test(reside(lm.result)) 	# 잔차에 대해 Shapiro-Wilk normality test를 수행. 잔차는 정규분포를 따라야 함(유의하지 않음)
+
+> par(mfrow=c(2,2)) 				# plot을 2x2의 형태로 나타냄
+> plot(lm.result)
+
+# 3) 다중 회귀분석
+> lm(syntax) 						# 함수 formula(syntax) 참고 https://stat.ethz.ch/R-manual/R-devel/library/stats/html/formula.html
+									# Model formula 설명 https://ww2.coastal.edu/kingw/statistics/R-tutorials/formulae.html
