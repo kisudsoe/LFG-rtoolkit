@@ -1,6 +1,6 @@
-#버전 v1.4
+#버전 v1.5
 #최초작성 2014-03-10 MON
-#최종수정 2016-04-26 TUE
+#최종수정 2016-05-02 MON
 #작성자 : 김승수
  
 ### Session 관리 함수 ###
@@ -194,19 +194,7 @@
 
   
 ### III. 그래프 함수 ###
- 
-## III-0. Graphic device (그림저장) 관련 ## (신규 2014-10-08)
- 
-  > png('filename.png', width=x, height=y) 	# 가로 x px, 세로 y px 크기의 png 파일 생성 (수정 2014-10-16)
-  > dev.off()
- 
-  > jpg('filename.jpg')
-  > dev.off()
- 
-  > dev.copy(png,filename='filename.png')
-  > dev.off()
- 
- 
+  
 ## III-1. Hihg-level 관련 ##
  
   >  dev.new(width=x, height=y) # 가로 x, 세로 y 크기를 가지는 새 그래프창 생성 (추가 2014-10-16)
@@ -230,9 +218,10 @@
 ## III-2. Low-level 관련 ##
  
   > points(data)
- 
   > lines(data, col="color")
   > ablines(x=x1)
+  > rect(xleft, ybottom, xright, ytop, col=“gray”, lty=0)
+  > polygon(x_vec, y_vec, col=“gray”, border=0)
  
   > text(x,y, "text")
   > axis(data)
@@ -245,3 +234,15 @@
   > histogram(data1, data2, data3, layout=c(column, rows, pages), main="제목")
  
   > par(mfrow=c(1,2)) 		# 1행 2열로 plot 파티션 나누기
+
+
+## III-4. Graphic device (그림저장) 관련 ## (신규 2014-10-08)
+ 
+  > png('filename.png', width=x, height=y) 	# 가로 x px, 세로 y px 크기의 png 파일 생성 (수정 2014-10-16)
+  > dev.off()
+ 
+  > jpg('filename.jpg')
+  > dev.off()
+ 
+  > dev.copy(png,filename='filename.png')
+  > dev.off()
