@@ -5,7 +5,7 @@
 # Minor edit 02 (2016-04-01 FRI) - Add 'data_total'
 data = input(1) # Input signal data
 data_total = input(1) # input total data
-group = input(0) # input group info : 14	14	14	29	29	29	44	44	44...
+group = input(0) # input group info : 14, 14, 14, 29, 29, 29, 44, 44, 44...
 
 ss.areaPlot = function(data,srch='',type=1,group) {
 	# Search string in srch for row id
