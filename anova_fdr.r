@@ -11,10 +11,10 @@ ss.anova.fdr = function(data,group) {
 
 	# Step 1. ANOVA iteration
 	raw.p = pbapply(data,1,function(row) {
-								if(!any(is.na(row))) {
-									fit = lm(row~group,na.action=na.exclude)
-									anovaP = anova(fit)$'Pr(>F)'[1]
-								} else { anovaP = NA } })
+    if(!any(is.na(row))) {
+      fit = lm(row~group,na.action=na.exclude)
+      anovaP = anova(fit)$'Pr(>F)'[1]
+    } else { anovaP = NA } })
 	time2 = Sys.time()
 	cat('Process iteration =',n,'\n')
 	print(time2-time1)
